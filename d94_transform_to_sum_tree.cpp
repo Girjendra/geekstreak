@@ -5,7 +5,7 @@ and right subtrees (based on the original tree). For leaf nodes, update their va
 */
 #include<iostream>
 using namespace std;
-/* Structure for Tree Node
+// Structure for Tree Node
 class Node {
 public:
     int data;
@@ -18,7 +18,7 @@ public:
         right = nullptr;
     }
 };
-*/
+
 class Solution {
   public:
     int solve(Node* root) {
