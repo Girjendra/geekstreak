@@ -10,6 +10,7 @@ Given x and s, determine whether all rooms are covered by at least one WiFi rout
 true if all rooms are covered; otherwise, return false.
 */
 #include<iostream>
+#include <vector>
 using namespace std;
 class Solution {
   public:
