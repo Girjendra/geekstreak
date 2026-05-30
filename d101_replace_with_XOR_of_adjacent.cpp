@@ -14,27 +14,16 @@ class Solution {
   public:
     void replaceElements(vector<int>& arr) {
         int n = arr.size();
-        if(n == 2) {
-            int temp = arr[0];
-            arr[0] = arr[0] ^ arr[1];
-            arr[1] = temp ^ arr[1];
-            return ;
-        }
-        
-        int f = arr[0];
-        int l = arr[n-1];
-        
+       
+        int l = arr[0];
         arr[0] = arr[0] ^ arr[1];
-        arr[n-1] = arr[n-2] ^ arr[n-1];
         
         for(int i = 1; i < n-1; i++) {
             int temp = arr[i];
-            if(i == n-2)
-                arr[i] = f ^ l;
-            else
-                arr[i] = f ^ arr[i+1];
-                
-            f = temp;
+            arr[i] = l ^ arr[i+1];
+            l = temp;
         }
+        
+        arr[n-1] = l ^ arr[n-1];
     }
 };
