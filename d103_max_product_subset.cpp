@@ -8,6 +8,7 @@ Since the product can be large, return it modulo 109 + 7.
 */
 #include<iostream>
 #include <vector>
+#include <climits>
 using namespace std;
 class Solution {
   public:
