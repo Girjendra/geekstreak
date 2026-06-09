@@ -4,6 +4,7 @@ Given an integer k representing the number of people to be seated and an array s
 Determine whether it is possible to seat all k people such that no two occupied seats are adjacent (including newly seated people).
 */
 #include<iostream>
+#include <vector>
 using namespace std;
 class Solution {
   public:
