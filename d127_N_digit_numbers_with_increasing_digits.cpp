@@ -2,6 +2,7 @@
 Given an integer n, return all the n digit numbers in increasing order, such that their digits are in strictly increasing order(from left to right).
 */
 #include<iostream>
+#include <vector>
 using namespace std;
 class Solution {
   public:
