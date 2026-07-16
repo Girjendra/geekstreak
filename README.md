@@ -60,7 +60,7 @@ The goal is simple:
 
 ## 📷 Proof of Work
 
-All screenshots related to the streak are available in this repository for reference.
+All screenshots related to the all streak are available in this repository for reference.
 
 ---
 
@@ -68,7 +68,7 @@ All screenshots related to the streak are available in this repository for refer
 
 This is not the end.
 
-> **Day n/∞ — The journey continues...**
+> **Day n/365 — The journey continues...**
 
 I will keep solving problems, improving my DSA skills, and pushing consistency further.
 
