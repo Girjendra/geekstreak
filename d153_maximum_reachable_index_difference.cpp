@@ -6,92 +6,102 @@ In each jump operation, move to any index on the right side whose character is t
 Continue performing jumps until no further jump is possible.
 Find the maximum possible difference between the starting index and the ending index. If it is not possible to choose a starting index, return -1.
 */
+
 #include<iostream>
 #include <vector>
 using namespace std;
-class Solution {
-  public:
-    int solve(int i, int n, string& s) {
-        int end = i;
+// class Solution {
+//   public:
+//     int solve(int i, int n, string& s) {
+//         int end = i;
 
-        for(int j = i + 1; j < n; j++)
-            if(s[j] == (s[i]+1))
-                end = max(end, solve(j, n, s));
+//         for(int j = i + 1; j < n; j++)
+//             if(s[j] == (s[i]+1))
+//                 end = max(end, solve(j, n, s));
 
-        return end;
-    }
+//         return end;
+//     }
     
-    int maxIndexDifference(string &s) {
-        int i = 0;
-        int n = s.size();
-        int ans = -1;
+//     int maxIndexDifference(string &s) {
+//         int i = 0;
+//         int n = s.size();
+//         int ans = -1;
         
-        while(i < n) {
-            if(s[i] == 'a')
-                ans = max(ans, solve(i, n, s)-i);
+//         while(i < n) {
+//             if(s[i] == 'a')
+//                 ans = max(ans, solve(i, n, s)-i);
                 
-            i++;
-        }
+//             i++;
+//         }
         
-        return ans;
-    }
-};
+//         return ans;
+//     }
+// };
 
 
 
-class Solution {
-  public:
-    int solve(int i, int n, string& s, vector<int>& dp) {
-        if (dp[i] != -1)
-            return dp[i];
+// class Solution {
+//   public:
+//     int solve(int i, int n, string& s, vector<int>& dp) {
+//         if (dp[i] != -1)
+//             return dp[i];
         
-        int end = i;
+//         int end = i;
         
-        for(int j = i + 1; j < n; j++)
-            if(s[j] == (s[i]+1))
-                end = max(end, solve(j, n, s, dp));
+//         for(int j = i + 1; j < n; j++)
+//             if(s[j] == (s[i]+1))
+//                 end = max(end, solve(j, n, s, dp));
 
-        return dp[i] = end;
-    }
+//         return dp[i] = end;
+//     }
     
-    int maxIndexDifference(string &s) {
-        int i = 0;
-        int n = s.size();
-        int ans = -1;
-        vector<int> dp(n, -1);
+//     int maxIndexDifference(string &s) {
+//         int i = 0;
+//         int n = s.size();
+//         int ans = -1;
+//         vector<int> dp(n, -1);
         
-        while(i < n) {
-            if(s[i] == 'a')
-                ans = max(ans, solve(i, n, s, dp)-i);
+//         while(i < n) {
+//             if(s[i] == 'a')
+//                 ans = max(ans, solve(i, n, s, dp)-i);
                 
-            i++;
+//             i++;
+//         }
+        
+//         return ans;
+//     }
+// };
+
+
+
+
+int maxIndexDifference(string &s) {
+    int n = s.size();
+    vector<int> best(26, -1);
+    
+    int ans = -1;
+    for (int i = n - 1; i >= 0; i--) {
+        int farthest = i;
+        if (s[i] != 'z' && best[s[i] - 'a' + 1] != -1)
+            farthest = best[s[i] - 'a' + 1];
+
+        best[s[i] - 'a'] = max(best[s[i] - 'a'], farthest);
+        
+        for(int it : best)
+            cout << it << " ";
+          
+        if (s[i] == 'a')
+            ans = max(ans, farthest - i);
+        cout << endl << "ans = " << ans << endl;
         }
         
-        return ans;
-    }
-};
+    
+    
+    return ans;
+}
 
-
-
-
-class Solution {
-  public:
-    int maxIndexDifference(string &s) {
-        int n = s.size();
-        vector<int> best(26, -1);
-        
-        int ans = -1;
-        for (int i = n - 1; i >= 0; i--) {
-            int farthest = i;
-            if (s[i] != 'z' && best[s[i] - 'a' + 1] != -1)
-                farthest = best[s[i] - 'a' + 1];
-
-            best[s[i] - 'a'] = max(best[s[i] - 'a'], farthest);
-            
-            if (s[i] == 'a')
-                ans = max(ans, farthest - i);
-        }
-        
-        return ans;
-    }
-};
+int main() {
+    string s = "aaabcb";
+    cout << maxIndexDifference(s) << endl;
+    return 0;
+}
