@@ -57,3 +57,31 @@ class Solution {
         return true;
     }
 };
+
+
+
+class Solution {
+  public:
+    void buildBSThelper(int &preIndex, int n, vector<int> &pre, int min, int max) {
+        if (preIndex >= n)
+            return;
+    
+        if (min <= pre[preIndex] && pre[preIndex] <= max) {
+            int rootData = pre[preIndex];
+            preIndex++;
+            buildBSThelper(preIndex, n, pre, min, rootData);
+            buildBSThelper(preIndex, n, pre, rootData, max);
+        }
+    }
+
+    bool canRepresentBST(vector<int> &arr) {
+        int min = INT_MIN, max = INT_MAX;
+    
+        int preIndex = 0;
+        int n = arr.size();
+    
+        buildBSThelper(preIndex, n, arr, min, max);
+    
+        return preIndex == n;
+    }
+};
