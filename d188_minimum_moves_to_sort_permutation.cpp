@@ -9,8 +9,8 @@ Return the minimum number of operations required to sort the array.
 #include <vector>
 using namespace std;
 
-class Solution
-{
+// TC = O(n), SC = O(n)
+class Solution {
 public:
     int minMoves(vector<int> &arr) {
         int n = arr.size();
