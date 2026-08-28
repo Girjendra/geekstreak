@@ -36,6 +36,6 @@ class Solution {
         int two = mat[0][1] + solve(1, 1, mat, dp);
         int three = mat[0][2] + solve(1, 2, mat, dp);
         
-        return min({one, two, three});
+        return min(one, min(two, three));
     }
 };
