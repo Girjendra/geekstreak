@@ -38,3 +38,26 @@ class Solution {
         return ans;
     }
 };
+
+
+
+// TC : O(n)
+class Solution {
+  public:
+    int maxFruits(vector<int>& arr, int m) {
+        int ans = 0;
+        for(int i = 0; i < m; i++) {
+            ans += arr[i];
+        }
+        
+        int cs = ans;
+        int i = 0, j = m, n = arr.size();
+        while(i < n) {
+            ans = max(ans, cs - arr[i] + arr[j % n]);
+            cs = cs - arr[i] + arr[j % n];
+            i++, j++;
+        }
+        
+        return ans;
+    }
+};
