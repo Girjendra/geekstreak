@@ -61,81 +61,81 @@ class Solution {
 class Solution {
   public:
     int gcd(int a, int b) {
-        if (b == 0)
+        if(b == 0)
             return a;
+    
         return gcd(b, a % b);
     }
     
-    // Get mid index
-    int getMid(int s, int e) {
-        return s + (e - s) / 2;
-    }
-    
-    // Build segment tree
-    int buildSegmentTree(vector<int> &arr, int ss, int se, vector<int> &st, int si) {
-        if (ss == se) {
-            st[si] = arr[ss];
-            return arr[ss];
+    void buildTree(vector<int>& arr, vector<int>& segTree, int index, int st, int end) {
+        if(st == end) {
+            segTree[index] = arr[st];
+            return ;
         }
-        int mid = getMid(ss, se);
-        st[si] = gcd(buildSegmentTree(arr, ss, mid, st, si * 2 + 1),
-                     buildSegmentTree(arr, mid + 1, se, st, si * 2 + 2));
-        return st[si];
+        
+        int mid = st + (end - st) / 2;
+        buildTree(arr, segTree, 2 * index + 1, st, mid);
+        buildTree(arr, segTree, 2 * index + 2, mid + 1, end);
+        
+        segTree[index] = gcd(segTree[2 * index + 1], segTree[2 * index + 2]);
     }
     
-    // Query GCD in range
-    int findGcd(int ss, int se, int qs, int qe, int si, vector<int> &st) {
-        if (ss > qe || se < qs)
-            return 0; // neutral for GCD
-        if (qs <= ss && qe >= se)
-            return st[si];
-        int mid = getMid(ss, se);
-        return gcd(findGcd(ss, mid, qs, qe, 2 * si + 1, st), findGcd(mid + 1, se, qs, qe, 2 * si + 2, st));
+    int query(vector<int>& segTree, int index, int st, int end, int l, int r) {
+        if(r < st || end < l)
+            return 0;
+            
+        if(l <= st && end <= r)
+            return segTree[index];
+            
+        int mid = st + (end - st) / 2;
+        int left = query(segTree, 2 * index + 1, st, mid, l, r);
+        int right = query(segTree, 2 * index + 2, mid + 1, end, l, r);
+        
+        return gcd(left, right);
     }
     
-    // Update a value in segment tree
-    void updateValueUtil(int ss, int se, int index, int new_val, int si, vector<int> &st) {
-        if (index < ss || index > se)
-            return;
-        if (ss == se) {
-            st[si] = new_val;
-            return;
+    void update(vector<int>& arr, vector<int>& segTree, int index, int i, int st, int end, int value) {
+        if(i < st || i > end)
+            return ;
+            
+        if(st == end) {
+            arr[i] = value;
+            segTree[index] = value;
+            return ;
         }
-        int mid = getMid(ss, se);
-        if (index <= mid)
-            updateValueUtil(ss, mid, index, new_val, 2 * si + 1, st);
-        else
-            updateValueUtil(mid + 1, se, index, new_val, 2 * si + 2, st);
-        st[si] = gcd(st[2 * si + 1], st[2 * si + 2]);
+        
+        int mid = st + (end - st) / 2;
+        update(arr, segTree, 2 * index + 1, i, st, mid, value);
+        update(arr, segTree, 2 * index + 2, i, mid + 1, end, value);
+        
+        
+        segTree[index] = gcd(segTree[2 * index + 1], segTree[2 * index + 2]);
     }
     
-    // Wrapper to update value
-    void updateValue(int index, int new_val, vector<int> &arr, vector<int> &st, int n) {
-        arr[index] = new_val;
-        updateValueUtil(0, n - 1, index, new_val, 0, st);
-    }
-
     vector<int> processQueries(vector<int>& arr, vector<vector<int>>& q) {
         int n = arr.size();
-        int x = 2 * (int)pow(2, ceil(log2(n))) - 1;
-        vector<int> st(x);
-        buildSegmentTree(arr, 0, n - 1, st, 0);
-
-        vector<int> result;
-        for (auto &query : q) {
-            int type = query[0];
-            if (type == 1) {
-                int index = query[1];
-                int new_val = query[2];
-                updateValue(index, new_val, arr, st, n);
+    
+        int treesize = 2*(int)pow(2, ceil(log2(n))) - 1; // or treesize = 4 * n
+        vector<int> segTree(treesize);
+        
+        buildTree(arr, segTree, 0, 0, n - 1);
+        
+        vector<int> ans;
+        for(auto it : q) {
+            if(it[0] == 0) {
+                int l = it[1];
+                int r = it[2];
+                int index = 0;
+                ans.push_back(query(segTree, index, 0, n - 1, l, r));
             }
             else {
-                int l = query[1];
-                int r = query[2];
-                result.push_back(findGcd(0, n - 1, l, r, 0, st));
+                int index = 0;
+                int i = it[1];
+                int value = it[2];
+                update(arr, segTree, index, i, 0, n - 1, value);
             }
         }
         
-        return result;
+        return ans;
     }
 };
