@@ -106,3 +106,43 @@ public:
         return n;
     }
 };
+
+
+
+
+
+
+
+
+// TC : O(n), SC: O(1)
+class Solution {
+public:
+    int getMinimumDays(string &s, vector<int> &p) {
+        int n = s.size();
+        
+        int t = 0;
+        for(int i = 0; i < n - 1; i++)
+            if(s[i] == s[i + 1])
+                t++;
+        
+        if(!t)
+            return 0;
+            
+        for(int day = 0; day < n; day++) {
+            int ind = p[day];
+            
+            if(ind - 1 >= 0 && s[ind - 1] == s[ind])
+                t--;
+            
+            if(ind + 1 < n && s[ind] == s[ind + 1])
+                t--;
+            
+            s[ind] = '?';
+            
+            if(!t)
+                return day + 1;
+        }
+
+        return n;
+    }
+};
